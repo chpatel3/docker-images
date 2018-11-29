@@ -20,7 +20,7 @@ echo "Managed Server Name: ${MANAGED_SERV_NAME}"
 echo "Managed Server Home: ${MS_HOME}"
 echo "Managed Server Security: ${MS_SECURITY}"
 
-SEC_PROPERTIES_FILE=${PROPERTIES_FILE_DIR}/security.properties
+SEC_PROPERTIES_FILE=${PROPERTIES_FILE_DIR}/docker_run/security.properties
 if [ ! -e "${SEC_PROPERTIES_FILE}" ]; then
    echo "A properties file with the username and password needs to be supplied."
    exit
