@@ -68,7 +68,7 @@ fi
 echo "Admin Server Home: ${AS_HOME}"
 echo "Admin Server Security: ${AS_SECURITY}"
 
-SEC_PROPERTIES_FILE=${PROPERTIES_FILE_DIR}/docker_run/security.properties
+SEC_PROPERTIES_FILE=${PROPERTIES_FILE_DIR}/security.properties
 if [ ! -e "${SEC_PROPERTIES_FILE}" ]; then
    echo "A security.properties file with the username and password needs to be supplied."
    exit
