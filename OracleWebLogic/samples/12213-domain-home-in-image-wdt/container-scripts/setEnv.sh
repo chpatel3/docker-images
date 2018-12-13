@@ -9,12 +9,12 @@
 # as environment variables in the docker image match the configured domain home.
 
 BUILD_ARG=''
-if [ "$#" -eq  "0" ]; then
+if [ $# > 1 ]; then
+  PROPERTIES_FILE=$1
+fi
+
+if [ ! -e "${PROPERTIES_FILE}" ]; then
     echo "A properties file with variable definitions should be supplied."
-    exit 1
- else
-    PROPERTIES_FILE=$1
-    echo Export environment variables from the ${PROPERTIES_FILE} properties file
 fi
 
 DOMAIN_DIR=`awk '{print $1}' $PROPERTIES_FILE | grep ^DOMAIN_NAME= | cut -d "=" -f2`

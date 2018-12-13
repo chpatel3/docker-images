@@ -33,7 +33,7 @@
 #            --build-arg WDT_ARCHIVE=archive.zip \
 #            --build-arg WDT_VARIABLE=properties/docker-build/domain.properties \
 #            --force-rm=true \
-#            -t 12213-domain-home-in-image-wdt .
+#            -t 12213-domain-wdt .
 #
 # If the ADMIN_HOST, ADMIN_PORT, MS_PORT, DOMAIN_NAME are not provided, the variables 
 # are set to default values. (The values shown in the build statement). 
@@ -66,6 +66,7 @@ ARG CUSTOM_DEBUG_PORT=8453
 # Persist arguments - for ports to expose and container to use
 # Create a placeholder for the manager server name. This will be provided when run the container
 # Weblogic and Domain locations
+# Set the start derby in admin server flag to true. Override this in the runtime properties
 # The boot.properties will be created under the DOMAIN_HOME when the admin server container is run 
 # WDT installation
 # ---------------------------
@@ -75,6 +76,7 @@ ENV ADMIN_NAME=${CUSTOM_ADMIN_NAME} \
     MANAGED_SERVER_NAME=${MANAGED_SERVER_NAME} \
     MANAGED_SERVER_PORT=${CUSTOM_MANAGED_SERVER_PORT} \
     DEBUG_PORT=${CUSTOM_DEBUG_PORT} \
+    DERBY_FLAG="true" \
     ORACLE_HOME=/u01/oracle \
     DOMAIN_NAME=${CUSTOM_DOMAIN_NAME} \
     DOMAIN_PARENT=${ORACLE_HOME}/user_projects/domains 
@@ -91,7 +93,7 @@ COPY container-scripts/* ${SCRIPT_HOME}/
 # Create the properties file directory and the domain home parent with the correct permissions / owner. 
 # Unzip and install the WDT image and change the permissions / owner.
 USER root
-RUN chmod +xw ${SCRIPT_HOME}/*.sh && \ 
+RUN chmod +xw $SCRIPT_HOME/*.sh && \ 
     chown -R oracle:oracle ${SCRIPT_HOME} && \
     mkdir -p +xwr $PROPERTIES_FILE_DIR && \
     chown -R oracle:oracle $PROPERTIES_FILE_DIR && \
@@ -99,7 +101,7 @@ RUN chmod +xw ${SCRIPT_HOME}/*.sh && \
     chown -R oracle:oracle $DOMAIN_PARENT && \
     chmod -R a+xwr $DOMAIN_PARENT && \
     cd ${WDT_HOME} && \
-    $JAVA_HOME/bin/jar xf weblogic-deploy.zip && \
+    $JAVA_HOME/bin/jar xf ./weblogic-deploy.zip && \
     rm weblogic-deploy.zip && \
     chmod +xw weblogic-deploy/bin/*.sh && \
     chmod -R +xw weblogic-deploy/lib/python   && \
@@ -136,8 +138,8 @@ RUN if [ -n "$WDT_MODEL" ]; then MODEL_OPT="-model_file $PROPERTIES_FILE_DIR/${W
         $VARIABLE_OPT  \
         $MODEL_OPT \
         $ARCHIVE_OPT && \
-        echo ". $DOMAIN_HOME/bin/setDomainEnv.sh" >> /u01/oracle/.bashrc && \
-        rm -rf $PROPERTIES_FILE_DIR 
+    chmod -R a+x $DOMAIN_HOME/bin/*.sh && \
+    rm -rf $PROPERTIES_FILE_DIR 
 
 # Mount the domain home and the WDT home for easy access.
 VOLUME $DOMAIN_HOME
