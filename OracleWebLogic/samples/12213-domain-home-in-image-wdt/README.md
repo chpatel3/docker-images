@@ -94,6 +94,10 @@ To parse the sample variable file and build the sample, run:
           --force-rm=true \
           -t 12213-domain-home-in-image-wdt .
 
+This sample provides a Derby Data Source that is targeted to the Managed Server cluster. The Derby database is created
+  in the Admin Server container when the container is run. To turn off the database create, set DERBY_FLAG="false" in the 
+  runtime security.properties used on the docker run statement.
+
 The Admin Server and each Managed Server are run in containers from this build image. In the sample, the securities.properties file
   is provided on the docker run command. This file contains both the Admin server credentials and the JAVA_OPTS to use for the        
   start of the Admin or Managed server. Mount the properties/docker-run directory to the container so that file can be accessed by the
