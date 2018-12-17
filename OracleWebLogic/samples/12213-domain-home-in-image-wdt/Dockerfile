@@ -47,7 +47,7 @@
 # Pull base image
 # ---------------
 # FROM store/oracle/weblogic:12.2.1.3
-FROM store/oracle/weblogic:12.2.1.3-dev
+FROM wlsldi-v2.docker.oraclecorp.com/weblogic:19.1.0.0 
 
 # Maintainer
 # ----------
@@ -87,7 +87,7 @@ ENV DOMAIN_HOME=${DOMAIN_PARENT}/${DOMAIN_NAME} \
     SCRIPT_HOME="${ORACLE_HOME}" \
     PATH=$PATH:${ORACLE_HOME}/oracle_common/common/bin:${ORACLE_HOME}/wlserver/common/bin:${DOMAIN_HOME}:${DOMAIN_HOME}/bin:${ORACLE_HOME}
 
-#COPY weblogic-deploy.zip ${WDT_HOME}
+COPY weblogic-deploy.zip ${WDT_HOME}
 COPY container-scripts/* ${SCRIPT_HOME}/
 
 # Create the properties file directory and the domain home parent with the correct permissions / owner. 
@@ -126,7 +126,7 @@ RUN chown -R oracle:oracle ${PROPERTIES_FILE_DIR}
 #
 # Set WORKDIR for @@PWD@@ global token in model file
 WORKDIR $ORACLE_HOME
-#USER oracle
+USER oracle
 RUN if [ -n "$WDT_MODEL" ]; then MODEL_OPT="-model_file $PROPERTIES_FILE_DIR/${WDT_MODEL##*/}"; fi && \
     if [ -n "$WDT_ARCHIVE" ]; then ARCHIVE_OPT="-archive_file $PROPERTIES_FILE_DIR/${WDT_ARCHIVE##*/}"; fi && \
     if [ -n "$WDT_VARIABLE" ]; then VARIABLE_OPT="-variable_file $PROPERTIES_FILE_DIR/${WDT_VARIABLE##*/}"; fi && \ 
