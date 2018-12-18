@@ -29,10 +29,7 @@ When the WDT `discoverDomain` tool is used on an existing domain, a ZIP archive 
 ## How to Build and Run
 
 
-**NOTE:** The image is based on a WebLogic Server image in the docker-images project: `oracle/weblogic:12.2.1.3-developer`. Build that image to your local repository before building this sample.
-
-The WebLogic Deploy Tool installer is required to build this image. Add `weblogic-deploy.zip` to the sample directory. The Docker sample requires a minimum release of weblogic-deploy-tooling-0.14. This release uses the new command argument `-domain_home` on the `createDomain` step.  This argument allows a domain home path with a domain folder name that can be different from the domain name in the model file.
-
+The WebLogic Deploy Tool installer is required to build this image. Add `weblogic-deploy.zip` to the sample directory. The docker sample requires a minimum release of weblogic-deploy-tooling-0.14. This release uses the new command argument -domain_home on the createDomain step.  This argument allows a Domain Home path with a domain folder name that can be different from the Domain name in the model file.
 
     $ wget https://github.com/oracle/weblogic-deploy-tooling/releases/download/weblogic-deploy-tooling-0.14/weblogic-deploy.zip
     
