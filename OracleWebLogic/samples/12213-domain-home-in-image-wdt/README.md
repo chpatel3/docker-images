@@ -28,8 +28,9 @@ When the WDT `discoverDomain` tool is used on an existing domain, a ZIP archive 
 
 ## How to Build and Run
 
+**NOTE:** The image is based on a WebLogic Server image in the docker-images project: `oracle/weblogic:12.2.1.3-developer`. Build that image to your local repository before building this sample.
 
-The WebLogic Deploy Tool installer is required to build this image. Add `weblogic-deploy.zip` to the sample directory. The docker sample requires a minimum release of weblogic-deploy-tooling-0.14. This release uses the new command argument -domain_home on the createDomain step.  This argument allows a Domain Home path with a domain folder name that can be different from the Domain name in the model file.
+The WebLogic Deploy Tool installer is required to build this image. Add `weblogic-deploy.zip` to the sample directory. The Docker sample requires a minimum release of weblogic-deploy-tooling-0.14. This release uses the new command argument `-domain_home` on the `createDomain` step.  This argument allows a domain home path with a domain folder name that can be different from the domain name in the model file.
 
     $ wget https://github.com/oracle/weblogic-deploy-tooling/releases/download/weblogic-deploy-tooling-0.14/weblogic-deploy.zip
     
@@ -91,14 +92,14 @@ To parse the sample variable file and build the sample, run:
           --force-rm=true \
           -t 12213-domain-home-in-image-wdt .
 
-This sample provides a Derby Data Source that is targeted to the Managed Server cluster. The Derby database is created
-  in the Admin Server container when the container is run. To turn off the database create, set DERBY_FLAG="false" in the 
-  runtime security.properties used on the docker run statement.
+This sample provides a Derby data source that is targeted to the Managed Server cluster. The Derby database is created
+  in the Administration Server container when the container is run. To turn off the database create, set `DERBY_FLAG="false"` in the
+  runtime `security.properties` used in the `docker run` statement.
 
-The Admin Server and each Managed Server are run in containers from this build image. In the sample, the securities.properties file
-  is provided on the docker run command. This file contains both the Admin server credentials and the JAVA_OPTS to use for the        
-  start of the Admin or Managed server. Mount the properties/docker-run directory to the container so that file can be accessed by the
-  server start script. It is the responsibility of the user to manage this volume, and the security.properties, in the container.
+The Administration Server and each Managed Server are run in containers from this build image. In the sample, the `securities.properties` file
+  is provided in the `docker run` command. In addition to the credentials and DERBY_FLAG, the file contains the JAVA_OPTS for the      
+  running Administration or Managed Server. Mount the `properties/docker-run` directory to the container so that file can be accessed by the
+  server start script. It is the responsibility of the user to manage this volume, and the `security.properties`, in the container.
 
 To start the containerized Administration Server, run:
 
